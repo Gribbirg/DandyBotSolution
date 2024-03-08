@@ -1,3 +1,9 @@
+# Dandy Bot Solution
+
+My simple universal solution for this task.
+
+-----
+
 # DandyBot
 
 This is a base version of the game. The development continues [here](https://github.com/Frovu/DandyBot).
