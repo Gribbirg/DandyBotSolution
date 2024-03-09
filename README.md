@@ -1,6 +1,6 @@
 # Dandy Bot Solution
 
-My simple universal solution for this task.
+My simple universal solution for this task placed [here](https://github.com/Gribbirg/DandyBotSolution/blob/main/user_bot.py).
 
 -----
 
