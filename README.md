@@ -1,37 +1,39 @@
 # Dandy Bot Solution
 
-My simple universal solution for this task placed [here](https://github.com/Gribbirg/DandyBotSolution/blob/main/user_bot.py).
+[![ru](https://img.shields.io/badge/game-readme-green.svg)](game-info.md)
+[![en](https://img.shields.io/badge/lang-en-blue.svg)](README.md)
+[![ru](https://img.shields.io/badge/lang-ru-red.svg)](README.ru.md)
 
------
+My simple universal solution for this task placed here: [user_bot.py](user_bot.py).
 
-# DandyBot
+## Main idea
 
-This is a base version of the game. The development continues [here](https://github.com/Frovu/DandyBot).
+BFS is used to find nearest gold at each step.
+If gold was nearest at previous step after moving in it direction it will remain the closest until we collect it.
+Also set is used with visited points to avoid entering positions that have already been visited.
 
-А simple programming game. You write Python scripts to control your bot in a roguelike (or [Dandy](https://en.wikipedia.org/wiki/Dandy_(video_game))-like) world. The goal is to collect as much gold as possible in the presence of other bots.
+Main BFS function:
 
-The game uses only the Python standard library. Graphics assets are taken from [here](https://opengameart.org/content/dungeon-crawl-32x32-tiles-supplemental).
+```python
+def get_direction(check, x, y):
+    """
+    Find direction to nearest gold
+    :param check: fun for check position
+    :param x: coords x
+    :param y: coords y
+    :return: direction
+    """
+    visited = set()
+    queue = get_base_queue(x, y)
 
-See [random_bot.py](random_bot.py) and [user_bot.py](user_bot.py) for API examples.
+    while True:
+        direction, (x, y) = queue.popleft()
 
-## Game rules
+        if check("gold", x, y):
+            return direction
+        if (x, y) in visited or check("wall", x, y):
+            continue
 
-1. Player should provide a Python script containing `script(check, x, y)` function.
-1. Player's function is called on every game tick, and should return player's action.
-1. Player should use provided `check` function to check for object at the desired position.
-1. Player may check for current level number, but we advice to generalize your code.
-1. Player should not use any global data or state.
-
-## API
-Player's action is:
-+ `"take"` for taking gold from players tile
-+ `"left"`, `"right"`, `"up"`, `"down"` for moving
-+ `"pass"` for doing essentially nothing
-
-Available check types are:
-+ `"gold"` - returns gold amount on tile
-+ `"player"` - tells if tile has player on it
-+ `"wall"` - tells if tile is impassable
-+ `"level"` - returns current level number starting from 1
-
-![screenshot](screenshot.png)
+        add_to_queue(queue, x, y, direction)
+        visited.add((x, y))
+```
